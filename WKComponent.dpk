@@ -1,0 +1,61 @@
+package WKComponent;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  vcldb,
+  vclimg;
+
+contains
+  WKEdit in 'WKEdit.pas',
+  WKPanel in 'WKPanel.pas',
+  WKBitBtn in 'WKBitBtn.pas',
+  WKButton in 'WKButton.pas',
+  WKComboBox in 'WKComboBox.pas',
+  WKDBGRID in 'WKDBGRID.pas',
+  WKGroupBox in 'WKGroupBox.pas',
+  WKLabel in 'WKLabel.pas',
+  WKMaskedit in 'WKMaskedit.pas',
+  WKMemo in 'WKMemo.pas',
+  WKPageControl in 'WKPageControl.pas',
+  WKScrollBar in 'WKScrollBar.pas',
+  WKScrollBox in 'WKScrollBox.pas',
+  WKSplitter in 'WKSplitter.pas',
+  WKProgressBar in 'WKProgressBar.pas',
+  uWKCheckBox in 'uWKCheckBox.pas',
+  WKRadioButton in 'WKRadioButton.pas',
+  WKPngButtonFunctions in 'PNGUnits\WKPngButtonFunctions.pas',
+  WKPngFunctions in 'PNGUnits\WKPngFunctions.pas',
+  WKPngSpeedButton in 'PNGUnits\WKPngSpeedButton.pas',
+  WKPngImageList in 'PNGUnits\WKPngImageList.pas',
+  WKSpeedButton in 'WKSpeedButton.pas';
+
+end.
