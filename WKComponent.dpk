@@ -56,6 +56,7 @@ contains
   WKPngFunctions in 'PNGUnits\WKPngFunctions.pas',
   WKPngSpeedButton in 'PNGUnits\WKPngSpeedButton.pas',
   WKPngImageList in 'PNGUnits\WKPngImageList.pas',
-  WKSpeedButton in 'WKSpeedButton.pas';
+  WKSpeedButton in 'WKSpeedButton.pas',
+  WKLabelEdit  in 'WKLabelEdit .pas';
 
 end.

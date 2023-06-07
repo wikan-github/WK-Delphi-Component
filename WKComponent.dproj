@@ -120,6 +120,9 @@
         <DCCReference Include="PNGUnits\WKPngSpeedButton.pas"/>
         <DCCReference Include="PNGUnits\WKPngImageList.pas"/>
         <DCCReference Include="WKSpeedButton.pas"/>
+        <DCCReference Include="WKLabelEdit .pas">
+            <ModuleName>WKLabelEdit</ModuleName>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
