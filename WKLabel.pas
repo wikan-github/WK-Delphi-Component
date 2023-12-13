@@ -10,6 +10,7 @@ type
   private
     FLicenseFeature: string;
     FTagObject: TObject;
+    FPrimaryKey: String;
     { Private declarations }
   protected
     { Protected declarations }
@@ -18,6 +19,7 @@ type
     { Public declarations }
   published
     property LicenseFeature: string read FLicenseFeature write FLicenseFeature;
+    Property PrimaryKey : String read FPrimaryKey write FPrimaryKey;
     property TagObject : TObject read FTagObject write FTagObject;
     { Published declarations }
   end;
