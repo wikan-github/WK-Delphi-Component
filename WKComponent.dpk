@@ -52,11 +52,11 @@ contains
   WKProgressBar in 'WKProgressBar.pas',
   uWKCheckBox in 'uWKCheckBox.pas',
   WKRadioButton in 'WKRadioButton.pas',
-  WKPngButtonFunctions in 'PNGUnits\WKPngButtonFunctions.pas',
-  WKPngFunctions in 'PNGUnits\WKPngFunctions.pas',
-  WKPngSpeedButton in 'PNGUnits\WKPngSpeedButton.pas',
-  WKPngImageList in 'PNGUnits\WKPngImageList.pas',
   WKSpeedButton in 'WKSpeedButton.pas',
-  WKLabelEdit  in 'WKLabelEdit .pas';
+  WKLabelEdit in 'WKLabelEdit .pas',
+  WKPngButtonFunctions in 'WKPngButtonFunctions.pas',
+  WKPngFunctions in 'WKPngFunctions.pas',
+  WKPngImageList in 'WKPngImageList.pas',
+  WKPngSpeedButton in 'WKPngSpeedButton.pas';
 
 end.

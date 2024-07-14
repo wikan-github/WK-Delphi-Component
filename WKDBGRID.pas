@@ -12,6 +12,8 @@ type
      FLicenseFeature: string;
      FLinesPerRow: Integer;
     FShowMemoAsText: Boolean;
+    FSelectedRowColor: TColor;
+    FFocusedCellColor: TColor;
      procedure SetLinesPerRow (Value: Integer);
   protected
     { Protected declarations }
@@ -27,7 +29,10 @@ type
     { Public declarations }
     constructor Create (AOwner: TComponent); override;
      procedure MaximizeColumn(psColumName: String);
+
   published
+     property SelectedRowColor : TColor read FSelectedRowColor write FSelectedRowColor;
+     property FocusedCellColor : TColor read FFocusedCellColor write FFocusedCellColor;
      property LicenseFeature: string read FLicenseFeature write FLicenseFeature;
      property ShowMemoAsText : Boolean read FShowMemoAsText write FShowMemoAsText;
      property LinesPerRow: Integer
@@ -53,11 +58,13 @@ begin
   ShowMemoAsText := True;
   Options :=[dgTitles,dgIndicator,
              dgColumnResize,dgColLines,
-             dgRowLines,dgTabs,dgRowSelect,
-             dgAlwaysShowSelection,dgConfirmDelete,
+             dgRowLines,dgTabs,
+             dgAlwaysShowSelection,dgConfirmDelete,dgRowSelect,
              dgCancelOnExit,dgMultiSelect,
              dgTitleClick,dgTitleHotTrack];
   Tag := 9;
+  FSelectedRowColor := $004AE3F0; //bit yellow to orange
+  FFocusedCellColor := clLime;
 end;
 
 procedure TWKDBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer;
@@ -68,63 +75,116 @@ var
   sTeks: string;
   lstate : TGridDrawState;
   oldbrush : TBrushStyle;
-  //clr : TColor;
+  cellColor : TColor;
   //clr : TColor;
 begin
   //lstate := [gdSelected];
-   lstate := [gdSelected,gdFocused,gdRowSelected];
+  lstate := [gdSelected,gdFocused,gdRowSelected];
   F := Column.Field;
  // lbrush := Canvas.Brush.Style;
- //clr := Canvas.Brush.Color;
+ cellColor := $00FCBA61;
+// clr := clBlue;
 
+  if (gdFocused in State)  then
+  begin
+     //state ini akan kalah dengan gdSelected
+     Self.Canvas.Brush.Color := FFocusedCellColor;
+  end;
+ if (gdSelected in State)  then
+  begin
+     //state ini aktif bila option dgRowselect = true
+     Self.Canvas.Brush.Color := FSelectedRowColor;
+  end else
+  begin
+     Self.Canvas.Brush.Color := cellColor;
+  end;
+
+  //pastikan bahwa colom pada dbgrid terhubung kedataset field
+  //selalu cek bila field tidak nil
   if f <> nil then
   begin
-    if (f.DataType =  ftWideString) or
-       (f.DataType = ftWideMemo) or
-       (f.DataType =  ftMemo) then
-    begin
+  (*
+      case f.DataType of
+        ftFixedWideChar,
+        ftWideMemo,
+        ftWideString,
+        ftFmtMemo,
+        ftMemo: begin
+        end;
+
+        ftUnknown: ;
+        ftString: ;
+        ftSmallint: ;
+        ftInteger: ;
+        ftWord: ;
+        ftBoolean: ;
+        ftFloat: ;
+        ftCurrency: ;
+        ftBCD: ;
+        ftDate: ;
+        ftTime: ;
+        ftDateTime: ;
+        ftBytes: ;
+        ftVarBytes: ;
+        ftAutoInc: ;
+        ftBlob: ;
+        ftGraphic: ;
+        ftParadoxOle: ;
+        ftDBaseOle: ;
+        ftTypedBinary: ;
+        ftCursor: ;
+        ftFixedChar: ;
+        ftLargeint: ;
+        ftADT: ;
+        ftArray: ;
+        ftReference: ;
+        ftDataSet: ;
+        ftOraBlob: ;
+        ftOraClob: ;
+        ftVariant: ;
+        ftInterface: ;
+        ftIDispatch: ;
+        ftGuid: ;
+        ftTimeStamp: ;
+        ftFMTBcd: ;
+        ftOraTimeStamp: ;
+        ftOraInterval: ;
+        ftLongWord: ;
+        ftShortint: ;
+        ftByte: ;
+        ftExtended: ;
+        ftConnection: ;
+        ftParams: ;
+        ftStream: ;
+        ftTimeStampOffset: ;
+        ftObject: ;
+        ftSingle: ;
+      end;
+
+    *)
+
       if FShowMemoAsText then
       begin
-
           if (f.DataType =  ftWideString) or
              (f.DataType = ftWideMemo) or
              (f.DataType =  ftMemo) then
           begin
-            if State <> [] then
-            begin
-              oldbrush := Canvas.Brush.Style;
-              Canvas.Brush.Style := bsSolid;
-            end;
-
-             if (gdSelected in State)  then
-              begin
-                 Self.Canvas.Brush.Color := $004AE3F0;
-                 Self.Canvas.Font.Color := clBlack;
-              end
-              else
-              begin
-                 Self.Canvas.Brush.Color := $00FCEBDC;
-                 Self.Canvas.Font.Color := clBlack;
-              end;
-            Self.DefaultDrawColumnCell(Rect,DataCol,Column, State);
-
             sTeks := f.AsString;
-            Canvas.TextRect(Rect,Rect.Left,Rect.Top,sTeks);
-
-
-
-
+            //tambahkan margin kiri 3 pixel, margin atas 1px
+            Canvas.TextRect(Rect,Rect.Left + 3,Rect.Top + 1,sTeks);
           end else
           begin
-           // clr := Self.Canvas.Brush.Color;
+            Self.DefaultDrawColumnCell(Rect,DataCol,Column, State);
           end;
-        //end;
         end;
-
-    end;
   end;
 
-
+//    if (gdSelected in State)  then
+//    begin
+//       Self.Canvas.Brush.Color := $004AE3F0;
+//       Self.Canvas.Font.Color := clBlack;
+//       Self.DefaultDrawColumnCell(Rect,DataCol,Column, State);
+//    end;
 
 
 

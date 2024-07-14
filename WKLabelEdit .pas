@@ -32,7 +32,8 @@ type
 
     function HapusKarakter(aText :string; aKarakterDihapus :
     char): string;
-    function SetCueBanner(const Edit: TEdit; const Placeholder: String): Boolean;
+    function SetCueBanner(const Edit: TLabeledEdit; const Placeholder: String):
+        Boolean;
   protected
 
     { Protected declarations }
@@ -96,31 +97,24 @@ begin
   FColorEnter := $004AE3F0;
   FWarnaPerhatian := clRed;
   Alignment := taLeftJustify;
- // MaxLength := 50;
   BolehNull := True;
   FJenisInput := InpTeks;
   FTabOnEnter := True;
   FForwardBackWardON := false;
   Font.Size := 10;
   Ctl3D := False;
-  //Tag := 9;
+//  LabelPosition := TLabelPosition.lpLeft;
 end;
 
 procedure TWKLabelEdit.Change;
 begin
   inherited;
   DataChanged := True;
-//  if Trim(Text)='' then
-//  begin
-//    //Text := DefaultEmpty;
-//    SetCueBanner(Self,FPlaceHolder);
-//  end;
-
 end;
 
 procedure TWKLabelEdit.DisplayPlaceHolder;
 begin
-//  SetCueBanner(Self,PlaceHolder);
+  SetCueBanner(Self,PlaceHolder);
 end;
 
 procedure TWKLabelEdit.DoEnter;
@@ -170,43 +164,43 @@ begin
 
                   end;
          InpBilGenap : begin
-                    if not(key in['0'..'9',#8,'-',FormatSettings.ThousandSeparator]) then key := #0;
+                    if not(CharInSet(key,['0'..'9',#8,'-',FormatSettings.ThousandSeparator])) then key := #0;
 //
          end;
          InpUang : begin
-                 if not(key in['0'..'9',#8,FormatSettings.ThousandSeparator]) then key := #0;
+                 if not(CharInSet(key,['0'..'9',#8,FormatSettings.ThousandSeparator])) then key := #0;
 //
          end;
 
          InpBilDecimal: begin
-                          if (key in['-']) then   //cek bila ada tanda negatif
+                          if (CharInSet(key,['-'])) then   //cek bila ada tanda negatif
                           begin
                             if (Pos('-',Text)=0) then //cek posisi tanda minus paling depan
                             begin
-                              if not(key in['0'..'9',#8,'-',FormatSettings.DecimalSeparator]) then
+                              if not(CharInSet(key,['0'..'9',#8,'-',FormatSettings.DecimalSeparator])) then
                                  key := #0;
                             end else key :=#0;
 
                           end else
                           begin
-                              if not(key in['0'..'9',#8,'-',FormatSettings.DecimalSeparator]) then
+                              if not(CharInSet(key,['0'..'9',#8,'-',FormatSettings.DecimalSeparator])) then
                               key := #0;
                           end;
                        end;
 
          InpFixedBilPositif: begin
 
-                              if not(key in['0'..'9',#8,#13]) then
+                              if not(CharInSet(Key,['0'..'9',#8,#13])) then
                               key := #0;
 
                        end;
 
          InpFixedBilPositifNegatif: begin
-                          if (key in['-']) then   //cek bila ada tanda negatif
+                          if (CharInSet(key,['-'])) then   //cek bila ada tanda negatif
                           begin
                             if (Pos('-',Text)=0) then //cek posisi tanda minus paling depan
                             begin
-                              if not(key in['0'..'9',#8,'-']) then
+                              if not(CharInSet(key,['0'..'9',#8,'-'])) then
                                  key := #0;
                             end else key :=#0;
 
@@ -214,7 +208,7 @@ begin
                           begin
 //                              if not CharInSet(Key,['0'..'9',#8,'-']) then
 
-                              if not(key in['0'..'9',#8,'-']) then
+                              if not(CharInSet(key,['0'..'9',#8,'-'])) then
                               key := #0;
                           end;
                        end;
@@ -316,7 +310,7 @@ begin
         end;
      InpUang :
         begin
-         // if not(key in['0'..'9',#8,ThousandSeparator]) then key := #0;
+         // if not(CharInSet(key,['0'..'9',#8,ThousandSeparator]) then key := #0;
           if trim(Text)='' then exit;
           dst := HapusKarakter(Text,FormatSettings.ThousandSeparator);
           Text := FormatCurr('##,##',StrToCurr(dst));
@@ -369,8 +363,8 @@ begin
    end;
 end;
 
-function TWKLabelEdit.SetCueBanner(const Edit: TEdit; const Placeholder: String):
-    Boolean;
+function TWKLabelEdit.SetCueBanner(const Edit: TLabeledEdit; const Placeholder:
+    String): Boolean;
 const
   EM_SETCUEBANNER = $1501;
 var
