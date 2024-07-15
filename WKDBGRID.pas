@@ -14,7 +14,10 @@ type
     FShowMemoAsText: Boolean;
     FSelectedRowColor: TColor;
     FFocusedCellColor: TColor;
+    FHeaderHeight: Integer;
+     procedure InitializeComponent;
      procedure SetLinesPerRow (Value: Integer);
+    procedure SetHeaderHeight(const Value: Integer);
   protected
     { Protected declarations }
     procedure DrawColumnCell(const Rect: TRect; DataCol: Integer;
@@ -31,13 +34,13 @@ type
      procedure MaximizeColumn(psColumName: String);
 
   published
-     property SelectedRowColor : TColor read FSelectedRowColor write FSelectedRowColor;
+     property SelectedRowColor : TColor read FSelectedRowColor write FSelectedRowColor; //bit yellow to orange;
      property FocusedCellColor : TColor read FFocusedCellColor write FFocusedCellColor;
      property LicenseFeature: string read FLicenseFeature write FLicenseFeature;
      property ShowMemoAsText : Boolean read FShowMemoAsText write FShowMemoAsText;
-     property LinesPerRow: Integer
-      read FLinesPerRow write SetLinesPerRow default 1;
-
+     property LinesPerRow: Integer read FLinesPerRow write SetLinesPerRow;
+     property HeaderHeight: Integer read FHeaderHeight write SetHeaderHeight;
+     property DefaultRowHeight;
   end;
 
 procedure Register;
@@ -54,17 +57,7 @@ end;
 constructor TWKDBGrid.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FLinesPerRow := 1;
-  ShowMemoAsText := True;
-  Options :=[dgTitles,dgIndicator,
-             dgColumnResize,dgColLines,
-             dgRowLines,dgTabs,
-             dgAlwaysShowSelection,dgConfirmDelete,dgRowSelect,
-             dgCancelOnExit,dgMultiSelect,
-             dgTitleClick,dgTitleHotTrack];
-  Tag := 9;
-  FSelectedRowColor := $004AE3F0; //bit yellow to orange
-  FFocusedCellColor := clLime;
+  InitializeComponent;
 end;
 
 procedure TWKDBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer;
@@ -227,6 +220,31 @@ begin
 
 end;
 
+procedure TWKDBGrid.InitializeComponent;
+begin
+  FLinesPerRow := 1;
+  ShowMemoAsText := True;
+  FSelectedRowColor := $004AE3F0; //bit yellow to orange
+  FFocusedCellColor := clLime;
+  Options :=[
+             dgTitles,
+             dgTitleClick,
+             dgColLines,
+             dgRowLines,
+             dgIndicator,
+             dgColumnResize,
+             dgRowSelect,
+             dgAlwaysShowSelection,
+             dgMultiSelect,
+             dgTabs,
+             dgCancelOnExit,
+             dgConfirmDelete,
+             dgTitleHotTrack
+             ];
+  Tag := 9;
+
+end;
+
 //procedure TWKDBGrid.DrawDataCell(Sender: TObject; const Rect: TRect;
 //  Field: TField; State: TGridDrawState);
 //begin
@@ -358,6 +376,13 @@ begin
 //      end;
     end;
 
+end;
+
+procedure TWKDBGrid.SetHeaderHeight(const Value: Integer);
+begin
+  FHeaderHeight := Value;
+  Self.RowHeights[0] := Value;
+  Self.RowHeightsChanged;
 end;
 
 procedure TWKDBGrid.SetLinesPerRow(Value: Integer);
