@@ -168,7 +168,7 @@ begin
 //
          end;
          InpUang : begin
-                 if not(CharInSet(key,['0'..'9',#8,FormatSettings.ThousandSeparator])) then key := #0;
+                 if not(CharInSet(key,['0'..'9',#8,FormatSettings.ThousandSeparator,FormatSettings.DecimalSeparator])) then key := #0;
 //
          end;
 
@@ -243,7 +243,7 @@ begin
    end;
 
 
-
+   {
    if key = VK_RETURN then
    begin
 
@@ -271,7 +271,7 @@ begin
                     Text :=FormatCurr('##,##',StrToCurr(dst));
          end;
     end;
-   end;
+   end;  }
 end;
 
 procedure TWKLabelEdit.InitializeComponent;
@@ -334,8 +334,9 @@ begin
            // if not(CharInSet(key,['0'..'9',#8,ThousandSeparator]) then key := #0;
             if trim(Text)='' then exit;
             dst := HapusKarakter(Text,FormatSettings.ThousandSeparator);
-            Text := FormatCurr('##,##',StrToCurr(dst));
+            Text := FormatCurr('###,###.000#',StrToCurr(dst));
           end;
+
      end;
    end;
 

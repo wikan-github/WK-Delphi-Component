@@ -15,6 +15,7 @@ type
     FSelectedRowColor: TColor;
     FFocusedCellColor: TColor;
     FHeaderHeight: Integer;
+    FShowRowNumber: Boolean;
      procedure InitializeComponent;
      procedure SetLinesPerRow (Value: Integer);
     procedure SetHeaderHeight(const Value: Integer);
@@ -30,15 +31,54 @@ type
 
   public
     { Public declarations }
-    constructor Create (AOwner: TComponent); override;
-     procedure MaximizeColumn(psColumName: String);
+    property ColCount;
+    property ColWidths;
+    property ColAlignments;
+    property CellAlignments;
+//    property DefaultColWidth: Integer read FDefaultColWidth write SetDefaultColWidth default 64;
+//    property DefaultColAlignment: TAlignment read FDefaultColAlignment write SetDefaultColAlignment default taLeftJustify;
+//    property DefaultDrawing: Boolean read FDefaultDrawing write FDefaultDrawing default True;
+//    property DefaultRowHeight: Integer read FDefaultRowHeight write SetDefaultRowHeight default 24;
+//    property DrawingStyle: TGridDrawingStyle read FDrawingStyle write SetDrawingStyle default gdsThemed;
+//    property EditorMode: Boolean read FEditorMode write SetEditorMode;
+//    property FixedColor: TColor read FFixedColor write SetFixedColor default clBtnFace;
+    property FixedCols;
+    property FixedRows;
+//    property GradientEndColor;
+//    property GradientStartColor;
+    property GridHeight;
+    property GridLineWidth;
+//    property GridWidth: Integer read GetGridWidth;
+//    property HitTest: TPoint read FHitTest;
+    property InplaceEditor;
+    property LeftCol;
+    property Row;
+    property RowCount;
 
+    property RowHeights;
+//    property ScrollBars: System.UITypes.TScrollStyle read FScrollBars write SetScrollBars default ssBoth;
+    property Selection;
+//    property TabStops[Index: Longint]: Boolean read GetTabStops write SetTabStops;
+    property TopRow;
+    property VisibleColCount;
+    property VisibleRowCount;
+//    property OnFixedCellClick: TFixedCellClickEvent read FOnFixedCellClick write FOnFixedCellClick;
+    (* redeclared property *)
+
+
+    constructor Create (AOwner: TComponent); override;
+    procedure MaximizeColumn(psColumName: String);
+    procedure ColWidthsChanged; override; //redeclared parent methods
+    procedure RowHeightsChanged; override; //redeclared parent methods
   published
      property SelectedRowColor : TColor read FSelectedRowColor write FSelectedRowColor; //bit yellow to orange;
      property FocusedCellColor : TColor read FFocusedCellColor write FFocusedCellColor;
      property LicenseFeature: string read FLicenseFeature write FLicenseFeature;
      property ShowMemoAsText : Boolean read FShowMemoAsText write FShowMemoAsText;
      property LinesPerRow: Integer read FLinesPerRow write SetLinesPerRow;
+
+     //this will create row number at column index 0
+     property ShowRowNumber: Boolean read FShowRowNumber write FShowRowNumber;
      property HeaderHeight: Integer read FHeaderHeight write SetHeaderHeight;
      property DefaultRowHeight;
   end;
@@ -53,6 +93,11 @@ begin
 end;
 
 { TWKDBGrid }
+
+procedure TWKDBGrid.ColWidthsChanged;
+begin
+  inherited ColWidthsChanged;
+end;
 
 constructor TWKDBGrid.Create(AOwner: TComponent);
 begin
@@ -69,8 +114,10 @@ var
   lstate : TGridDrawState;
   oldbrush : TBrushStyle;
   cellColor : TColor;
+  myRect : TRect;
   //clr : TColor;
 begin
+  myRect := Rect;
   //lstate := [gdSelected];
   lstate := [gdSelected,gdFocused,gdRowSelected];
   F := Column.Field;
@@ -96,66 +143,6 @@ begin
   //selalu cek bila field tidak nil
   if f <> nil then
   begin
-  (*
-      case f.DataType of
-        ftFixedWideChar,
-        ftWideMemo,
-        ftWideString,
-        ftFmtMemo,
-        ftMemo: begin
-        end;
-
-        ftUnknown: ;
-        ftString: ;
-        ftSmallint: ;
-        ftInteger: ;
-        ftWord: ;
-        ftBoolean: ;
-        ftFloat: ;
-        ftCurrency: ;
-        ftBCD: ;
-        ftDate: ;
-        ftTime: ;
-        ftDateTime: ;
-        ftBytes: ;
-        ftVarBytes: ;
-        ftAutoInc: ;
-        ftBlob: ;
-        ftGraphic: ;
-        ftParadoxOle: ;
-        ftDBaseOle: ;
-        ftTypedBinary: ;
-        ftCursor: ;
-        ftFixedChar: ;
-        ftLargeint: ;
-        ftADT: ;
-        ftArray: ;
-        ftReference: ;
-        ftDataSet: ;
-        ftOraBlob: ;
-        ftOraClob: ;
-        ftVariant: ;
-        ftInterface: ;
-        ftIDispatch: ;
-        ftGuid: ;
-        ftTimeStamp: ;
-        ftFMTBcd: ;
-        ftOraTimeStamp: ;
-        ftOraInterval: ;
-        ftLongWord: ;
-        ftShortint: ;
-        ftByte: ;
-        ftExtended: ;
-        ftConnection: ;
-        ftParams: ;
-        ftStream: ;
-        ftTimeStampOffset: ;
-        ftObject: ;
-        ftSingle: ;
-      end;
-
-    *)
-
       if FShowMemoAsText then
       begin
           if (f.DataType =  ftWideString) or
@@ -170,6 +157,24 @@ begin
             Self.DefaultDrawColumnCell(Rect,DataCol,Column, State);
           end;
         end;
+  end;
+
+  if FShowRowNumber then
+  if Column.Index = 0 then
+  begin
+    if self.DataSource.DataSet <> nil then
+    if self.DataSource.DataSet.Active = true then
+    begin
+      sTeks := IntToStr(self.DataSource.DataSet.RecNo);
+      Column.Alignment := TAlignment.taCenter;
+//      Column.DisplayName := sTeks;
+//      DrawText(Canvas.Handle, PChar(sTeks), Length(sTeks), Rect, DT_SINGLELINE or DT_RIGHT);
+      //tambahkan margin kiri 3 pixel, margin atas 1px
+//      Canvas.TextRect(Rect,Rect.Left + 3,Rect.Top + 1,sTeks);
+      self.Canvas.TextRect(myRect, sTeks, [TTextFormats.tfCenter,TTextFormats.tfSingleLine]);
+//      DrawText()
+//      Canvas.te
+    end;
   end;
 
 //    if (gdSelected in State)  then
@@ -226,6 +231,7 @@ begin
   ShowMemoAsText := True;
   FSelectedRowColor := $004AE3F0; //bit yellow to orange
   FFocusedCellColor := clLime;
+  FShowRowNumber := False;
   Options :=[
              dgTitles,
              dgTitleClick,
@@ -242,6 +248,7 @@ begin
              dgTitleHotTrack
              ];
   Tag := 9;
+
 
 end;
 
@@ -331,7 +338,7 @@ begin
     //how many columns need to be auto-resized
     ResizableColumnCount := 0;
 
-    for i := 0 to -1 + Columns.Count do
+    for i := 0 to Columns.Count -1 do
     begin
       TotWidth := TotWidth + Columns[i].Width;
 
@@ -376,6 +383,11 @@ begin
 //      end;
     end;
 
+end;
+
+procedure TWKDBGrid.RowHeightsChanged;
+begin
+   inherited RowHeightsChanged;
 end;
 
 procedure TWKDBGrid.SetHeaderHeight(const Value: Integer);

@@ -174,7 +174,7 @@ begin
 //
          end;
          InpUang : begin
-                 if not(key in['0'..'9',#8,FormatSettings.ThousandSeparator]) then key := #0;
+                 if not(key in['0'..'9',#8,FormatSettings.ThousandSeparator,FormatSettings.DecimalSeparator]) then key := #0;
 //
          end;
 
@@ -290,6 +290,8 @@ var
     dst: string;
     I,L,P: Integer;
 begin
+   inherited;
+
    Color := FOldBackColor;
    if FisPerhatianDipanggil then
    begin
@@ -319,10 +321,10 @@ begin
          // if not(key in['0'..'9',#8,ThousandSeparator]) then key := #0;
           if trim(Text)='' then exit;
           dst := HapusKarakter(Text,FormatSettings.ThousandSeparator);
-          Text := FormatCurr('##,##',StrToCurr(dst));
+          Text := FormatCurr('###,###.####',StrToCurr(dst));
         end;
    end;
-    inherited;
+
 end;
 
 function TWKEdit.HapusKarakter(aText :string; aKarakterDihapus :
