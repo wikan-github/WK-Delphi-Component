@@ -151,7 +151,11 @@ begin
           begin
             sTeks := f.AsString;
             //tambahkan margin kiri 3 pixel, margin atas 1px
-            Canvas.TextRect(Rect,Rect.Left + 3,Rect.Top + 1,sTeks);
+//            Canvas.TextRect(Rect,Rect.Left + 3,Rect.Top + 1,sTeks);
+            Canvas.FillRect(Rect); // paint the rect using brush color
+            myRect.Left := myRect.Left + 3;  //tambahkan 3 pixel
+//            myRect.Top := myRect.Top + 1;
+            Canvas.TextRect(myRect, sTeks, [tfLeft,tfSingleLine,tfVerticalCenter]);
           end else
           begin
             Self.DefaultDrawColumnCell(Rect,DataCol,Column, State);
@@ -171,7 +175,8 @@ begin
 //      DrawText(Canvas.Handle, PChar(sTeks), Length(sTeks), Rect, DT_SINGLELINE or DT_RIGHT);
       //tambahkan margin kiri 3 pixel, margin atas 1px
 //      Canvas.TextRect(Rect,Rect.Left + 3,Rect.Top + 1,sTeks);
-      self.Canvas.TextRect(myRect, sTeks, [TTextFormats.tfCenter,TTextFormats.tfSingleLine]);
+       Canvas.FillRect(Rect); // paint the rect using brush color
+       Canvas.TextRect(myRect, sTeks, [tfCenter,tfSingleLine,tfVerticalCenter]);
 //      DrawText()
 //      Canvas.te
     end;
