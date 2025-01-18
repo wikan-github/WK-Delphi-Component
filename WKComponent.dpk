@@ -13,8 +13,8 @@ package WKComponent;
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
 {$OPTIMIZATION OFF}
-{$OVERFLOWCHECKS OFF}
-{$RANGECHECKS OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
 {$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
 {$STACKFRAMES ON}
@@ -32,7 +32,11 @@ requires
   vcl,
   dbrtl,
   vcldb,
-  vclimg;
+  vclimg,
+  designide,
+  vclactnband,
+  vclx,
+  xmlrtl;
 
 contains
   WKEdit in 'WKEdit.pas',
@@ -53,10 +57,10 @@ contains
   uWKCheckBox in 'uWKCheckBox.pas',
   WKRadioButton in 'WKRadioButton.pas',
   WKSpeedButton in 'WKSpeedButton.pas',
-  WKLabelEdit in 'WKLabelEdit .pas',
   WKPngButtonFunctions in 'WKPngButtonFunctions.pas',
   WKPngFunctions in 'WKPngFunctions.pas',
   WKPngImageList in 'WKPngImageList.pas',
-  WKPngSpeedButton in 'WKPngSpeedButton.pas';
+  WKPngSpeedButton in 'WKPngSpeedButton.pas',
+  WKLabeledEdit in 'WKLabeledEdit.pas';
 
 end.

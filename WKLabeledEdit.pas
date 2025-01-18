@@ -1,19 +1,20 @@
-unit WKLabelEdit ;
+unit WKLabeledEdit;
 
 interface
 
 uses
-    Vcl.StdCtrls,Vcl.Graphics, Winapi.Windows, Winapi.Messages, Vcl.Forms
-    ,System.SysUtils, System.Classes, Vcl.Controls,Vcl.ExtCtrls;
+  System.SysUtils, System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.ExtCtrls,Vcl.Graphics, Winapi.Windows, Winapi.Messages, Vcl.Forms;
 
 type
   TJenisInput=(InpTeks,InpBilDecimal,InpBilGenap,
                InpUang,InpFixedBilPositif,InpFixedBilPositifNegatif);
 
-  TWKLabelEdit  = class(TLabeledEdit)
+type
+  TWKLabeledEdit = class(TLabeledEdit)
   private
     { Private declarations }
-    FOldBackColor : Tcolor;
+        FOldBackColor : Tcolor;
     FColorEnter   : Tcolor;
     FTabOnEnter   : boolean;
     FBolehNull    : boolean;
@@ -36,7 +37,7 @@ type
     function SetCueBanner(const Edit: TLabeledEdit; const Placeholder: String):
         Boolean;
     procedure InitializeComponent;
-  protected
+ protected
 
     { Protected declarations }
     Procedure DoEnter; override;
@@ -76,9 +77,7 @@ type
 
     //to format displayed number onexit event control
     property AutoFormatNumber: Boolean read FAutoFormatNumber write FAutoFormatNumber;
-
   end;
-
 
 procedure Register;
 
@@ -86,10 +85,11 @@ implementation
 
 procedure Register;
 begin
-  RegisterComponents('WKComponent', [TWKLabelEdit]);
+  RegisterComponents('WKComponent', [TWKLabeledEdit]);
 end;
 
-procedure TWKLabelEdit.CreateParams(Var Params : TCreateParams);
+
+procedure TWKLabeledEdit.CreateParams(Var Params : TCreateParams);
 const
     Alignments : array [TAlignment] of DWORD =(ES_LEFT,ES_RIGHT,ES_CENTER);
 begin
@@ -100,31 +100,31 @@ begin
   end;
 end;
 
-constructor TWKLabelEdit.Create(AOwner : TComponent);
+constructor TWKLabeledEdit.Create(AOwner : TComponent);
 begin
     inherited Create(AOwner);
     InitializeComponent;
 end;
 
-procedure TWKLabelEdit.Change;
+procedure TWKLabeledEdit.Change;
 begin
   inherited;
   DataChanged := True;
 end;
 
-procedure TWKLabelEdit.DisplayPlaceHolder;
+procedure TWKLabeledEdit.DisplayPlaceHolder;
 begin
   SetCueBanner(Self,PlaceHolder);
 end;
 
-procedure TWKLabelEdit.DoEnter;
+procedure TWKLabeledEdit.DoEnter;
 begin
   inherited;
   FOldBackColor := Color;
   Color := FColorEnter;
 end;
 
-Procedure TWKLabelEdit.SetWarnaPerhatian;
+Procedure TWKLabeledEdit.SetWarnaPerhatian;
 begin
     FBackColorSebelumPerhatian := Color; //ini duluan
     Color := FWarnaPerhatian;            //baru ini
@@ -132,7 +132,7 @@ begin
 end;
 
 
-Procedure TWKLabelEdit.KeyPress(Var Key : Char);
+Procedure TWKLabeledEdit.KeyPress(Var Key : Char);
 var
 //   dst : string;
 //   I,L,P: Integer;
@@ -165,11 +165,9 @@ begin
                   end;
          InpBilGenap : begin
                     if not(CharInSet(key,['0'..'9',#8,'-',FormatSettings.ThousandSeparator])) then key := #0;
-//
          end;
          InpUang : begin
                  if not(CharInSet(key,['0'..'9',#8,FormatSettings.ThousandSeparator,FormatSettings.DecimalSeparator])) then key := #0;
-//
          end;
 
          InpBilDecimal: begin
@@ -189,10 +187,7 @@ begin
                        end;
 
          InpFixedBilPositif: begin
-
-                              if not(CharInSet(Key,['0'..'9',#8,#13])) then
-                              key := #0;
-
+                              if not(CharInSet(Key,['0'..'9',#8,#13])) then key := #0;
                        end;
 
          InpFixedBilPositifNegatif: begin
@@ -206,8 +201,6 @@ begin
 
                           end else
                           begin
-//                              if not CharInSet(Key,['0'..'9',#8,'-']) then
-
                               if not(CharInSet(key,['0'..'9',#8,'-'])) then
                               key := #0;
                           end;
@@ -218,9 +211,7 @@ begin
 end;
 
 
-
-
-procedure TWKLabelEdit.KeyUp(Var Key : Word; Shift:TshiftState);
+procedure TWKLabeledEdit.KeyUp(Var Key : Word; Shift:TshiftState);
 var
     dst: string;
     I,L,P: Integer;
@@ -242,39 +233,9 @@ begin
       end;
    end;
 
-
-   {
-   if key = VK_RETURN then
-   begin
-
-
-     case JenisInput of
-     InpBilGenap:
-        begin
-           if trim(Text)='' then exit;
-           dst := HapusKarakter(Text,FormatSettings.ThousandSeparator);
-           L := length(dst);
-           if L <= 3 then exit;
-           I := 3;
-              while I < L do
-              begin
-                P := L - I;
-                Insert(FormatSettings.ThousandSeparator,dst,P+1);
-                I := I + 3;
-              end;
-           Text := dst;
-        end;
-
-        InpUang : begin
-                    if trim(Text)='' then exit;
-                    dst := HapusKarakter(Text,FormatSettings.ThousandSeparator);
-                    Text :=FormatCurr('##,##',StrToCurr(dst));
-         end;
-    end;
-   end;  }
 end;
 
-procedure TWKLabelEdit.InitializeComponent;
+procedure TWKLabeledEdit.InitializeComponent;
 begin
 //  inherited InitializeComponent; //must be called first
   //ref : https://docwiki.embarcadero.com/RADStudio/Sydney/en/Initializing_After_Loading
@@ -295,7 +256,7 @@ begin
 
 end;
 
-procedure TWKLabelEdit.DoExit;
+procedure TWKLabeledEdit.DoExit;
 var
 
     dst: string;
@@ -343,7 +304,7 @@ begin
 
 end;
 
-function TWKLabelEdit.HapusKarakter(aText :string; aKarakterDihapus :
+function TWKLabeledEdit.HapusKarakter(aText :string; aKarakterDihapus :
     char): string;
 var
   i: Integer;
@@ -366,7 +327,7 @@ begin
 
 end;
 
-procedure TWKLabelEdit.KembalikanWarnaBackground;
+procedure TWKLabeledEdit.KembalikanWarnaBackground;
 begin
   //fungsi ini berguna setelah pemanggilan terhadap setwarnaperhatian
   //coz, bila setelah pemanggilan fungsi tsb,fungsi ni tdk dipanggil, maka
@@ -378,7 +339,7 @@ begin
    end;
 end;
 
-procedure TWKLabelEdit.SetAlignment(Const Value : TAlignment);
+procedure TWKLabeledEdit.SetAlignment(Const Value : TAlignment);
 begin
    if FAlignment <> Value then
    begin
@@ -387,7 +348,7 @@ begin
    end;
 end;
 
-function TWKLabelEdit.SetCueBanner(const Edit: TLabeledEdit; const Placeholder:
+function TWKLabeledEdit.SetCueBanner(const Edit: TLabeledEdit; const Placeholder:
     String): Boolean;
 const
   EM_SETCUEBANNER = $1501;
@@ -400,5 +361,3 @@ begin
 end;
 
 end.
-
-
