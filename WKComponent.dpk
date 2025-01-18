@@ -39,28 +39,28 @@ requires
   xmlrtl;
 
 contains
-  WKEdit in 'WKEdit.pas',
-  WKPanel in 'WKPanel.pas',
+  uWKCheckBox in 'uWKCheckBox.pas',
   WKBitBtn in 'WKBitBtn.pas',
   WKButton in 'WKButton.pas',
   WKComboBox in 'WKComboBox.pas',
   WKDBGRID in 'WKDBGRID.pas',
+  WKEdit in 'WKEdit.pas',
   WKGroupBox in 'WKGroupBox.pas',
   WKLabel in 'WKLabel.pas',
+  WKLabelEdit in 'WKLabelEdit.pas',
   WKMaskedit in 'WKMaskedit.pas',
   WKMemo in 'WKMemo.pas',
   WKPageControl in 'WKPageControl.pas',
-  WKScrollBar in 'WKScrollBar.pas',
-  WKScrollBox in 'WKScrollBox.pas',
-  WKSplitter in 'WKSplitter.pas',
-  WKProgressBar in 'WKProgressBar.pas',
-  uWKCheckBox in 'uWKCheckBox.pas',
-  WKRadioButton in 'WKRadioButton.pas',
-  WKSpeedButton in 'WKSpeedButton.pas',
+  WKPanel in 'WKPanel.pas',
   WKPngButtonFunctions in 'WKPngButtonFunctions.pas',
   WKPngFunctions in 'WKPngFunctions.pas',
   WKPngImageList in 'WKPngImageList.pas',
   WKPngSpeedButton in 'WKPngSpeedButton.pas',
-  WKLabeledEdit in 'WKLabeledEdit.pas';
+  WKProgressBar in 'WKProgressBar.pas',
+  WKRadioButton in 'WKRadioButton.pas',
+  WKScrollBar in 'WKScrollBar.pas',
+  WKScrollBox in 'WKScrollBox.pas',
+  WKSpeedButton in 'WKSpeedButton.pas',
+  WKSplitter in 'WKSplitter.pas';
 
 end.

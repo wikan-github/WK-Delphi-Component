@@ -1,5 +1,4 @@
-unit WKLabeledEdit;
-
+unit WKLabelEdit;
 interface
 
 uses
@@ -11,7 +10,7 @@ type
                InpUang,InpFixedBilPositif,InpFixedBilPositifNegatif);
 
 type
-  TWKLabeledEdit = class(TLabeledEdit)
+  TWKLabelEdit = class(TLabeledEdit)
   private
     { Private declarations }
         FOldBackColor : Tcolor;
@@ -85,11 +84,11 @@ implementation
 
 procedure Register;
 begin
-  RegisterComponents('WKComponent', [TWKLabeledEdit]);
+  RegisterComponents('WKComponent', [TWKLabelEdit]);
 end;
 
 
-procedure TWKLabeledEdit.CreateParams(Var Params : TCreateParams);
+procedure TWKLabelEdit.CreateParams(Var Params : TCreateParams);
 const
     Alignments : array [TAlignment] of DWORD =(ES_LEFT,ES_RIGHT,ES_CENTER);
 begin
@@ -100,31 +99,31 @@ begin
   end;
 end;
 
-constructor TWKLabeledEdit.Create(AOwner : TComponent);
+constructor TWKLabelEdit.Create(AOwner : TComponent);
 begin
     inherited Create(AOwner);
     InitializeComponent;
 end;
 
-procedure TWKLabeledEdit.Change;
+procedure TWKLabelEdit.Change;
 begin
   inherited;
   DataChanged := True;
 end;
 
-procedure TWKLabeledEdit.DisplayPlaceHolder;
+procedure TWKLabelEdit.DisplayPlaceHolder;
 begin
   SetCueBanner(Self,PlaceHolder);
 end;
 
-procedure TWKLabeledEdit.DoEnter;
+procedure TWKLabelEdit.DoEnter;
 begin
   inherited;
   FOldBackColor := Color;
   Color := FColorEnter;
 end;
 
-Procedure TWKLabeledEdit.SetWarnaPerhatian;
+Procedure TWKLabelEdit.SetWarnaPerhatian;
 begin
     FBackColorSebelumPerhatian := Color; //ini duluan
     Color := FWarnaPerhatian;            //baru ini
@@ -132,7 +131,7 @@ begin
 end;
 
 
-Procedure TWKLabeledEdit.KeyPress(Var Key : Char);
+Procedure TWKLabelEdit.KeyPress(Var Key : Char);
 var
 //   dst : string;
 //   I,L,P: Integer;
@@ -211,7 +210,7 @@ begin
 end;
 
 
-procedure TWKLabeledEdit.KeyUp(Var Key : Word; Shift:TshiftState);
+procedure TWKLabelEdit.KeyUp(Var Key : Word; Shift:TshiftState);
 var
     dst: string;
     I,L,P: Integer;
@@ -235,7 +234,7 @@ begin
 
 end;
 
-procedure TWKLabeledEdit.InitializeComponent;
+procedure TWKLabelEdit.InitializeComponent;
 begin
 //  inherited InitializeComponent; //must be called first
   //ref : https://docwiki.embarcadero.com/RADStudio/Sydney/en/Initializing_After_Loading
@@ -256,7 +255,7 @@ begin
 
 end;
 
-procedure TWKLabeledEdit.DoExit;
+procedure TWKLabelEdit.DoExit;
 var
 
     dst: string;
@@ -304,7 +303,7 @@ begin
 
 end;
 
-function TWKLabeledEdit.HapusKarakter(aText :string; aKarakterDihapus :
+function TWKLabelEdit.HapusKarakter(aText :string; aKarakterDihapus :
     char): string;
 var
   i: Integer;
@@ -327,7 +326,7 @@ begin
 
 end;
 
-procedure TWKLabeledEdit.KembalikanWarnaBackground;
+procedure TWKLabelEdit.KembalikanWarnaBackground;
 begin
   //fungsi ini berguna setelah pemanggilan terhadap setwarnaperhatian
   //coz, bila setelah pemanggilan fungsi tsb,fungsi ni tdk dipanggil, maka
@@ -339,7 +338,7 @@ begin
    end;
 end;
 
-procedure TWKLabeledEdit.SetAlignment(Const Value : TAlignment);
+procedure TWKLabelEdit.SetAlignment(Const Value : TAlignment);
 begin
    if FAlignment <> Value then
    begin
@@ -348,7 +347,7 @@ begin
    end;
 end;
 
-function TWKLabeledEdit.SetCueBanner(const Edit: TLabeledEdit; const Placeholder:
+function TWKLabelEdit.SetCueBanner(const Edit: TLabeledEdit; const Placeholder:
     String): Boolean;
 const
   EM_SETCUEBANNER = $1501;
@@ -359,5 +358,7 @@ begin
   SendMessage(Edit.Handle, EM_SETCUEBANNER, WParam(True),LParam(UniStr));
   Result := GetLastError() = ERROR_SUCCESS;
 end;
+
+end.
 
 end.
